@@ -3,10 +3,11 @@ package aut.utcluj.isp.ex2;
 /**
  * @author stefan
  */
-public class AirplaneTicket {
+public class AirplaneTicket extends Ticket{
     private String destination;
 
     public AirplaneTicket(String id, String customerName, Double price, String destination) {
+        super();
         this.destination = destination;
 
     }

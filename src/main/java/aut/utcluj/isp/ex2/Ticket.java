@@ -1,11 +1,8 @@
 package aut.utcluj.isp.ex2;
-
-import aut.utcluj.isp.ex4.NoTicketAvailableException;
-
 /**
  * @author stefan
  */
-public class Ticket extends NoTicketAvailableException {
+public class Ticket{
     private String id;
     private String customerName;
     private Double price;
@@ -14,6 +11,10 @@ public class Ticket extends NoTicketAvailableException {
         this.id = id;
         this.customerName = customerName;
         this.price = price;
+    }
+
+    public Ticket() {
+
     }
 
     public String getId() {
