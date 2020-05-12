@@ -1,5 +1,7 @@
 package aut.utcluj.isp.ex1;
 
+import java.util.Objects;
+
 /**
  * @author stefan
  */
@@ -30,5 +32,20 @@ public class   Ticket {
 
     public Double getPrice() {
         return price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(id, ticket.id) &&
+                Objects.equals(customerName, ticket.customerName) &&
+                Objects.equals(price, ticket.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, customerName, price);
     }
 }
