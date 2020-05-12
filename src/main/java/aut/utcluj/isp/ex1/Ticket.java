@@ -4,7 +4,7 @@ package aut.utcluj.isp.ex1;
 /**
  * @author stefan
  */
-public class Ticket {
+public class   Ticket {
     private String id;
     private String customerName;
     private Double price;
