@@ -1,4 +1,5 @@
 package aut.utcluj.isp.ex4;
+//am modificat ce am vrut eu
 
 /**
  * @author stefan
@@ -11,7 +12,10 @@ public class AirplaneTicket {
     private TicketStatus status;
 
     public AirplaneTicket(String id, Double price, String destination) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        this.id = id;
+        this.price = price;
+        this.destination = destination;
     }
 
     public String getId() {

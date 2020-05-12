@@ -1,15 +1,19 @@
 package aut.utcluj.isp.ex2;
 
+import aut.utcluj.isp.ex4.NoTicketAvailableException;
+
 /**
  * @author stefan
  */
-public class Ticket {
+public class Ticket extends NoTicketAvailableException {
     private String id;
     private String customerName;
     private Double price;
 
     public Ticket(String id, String customerName, Double price) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.id = id;
+        this.customerName = customerName;
+        this.price = price;
     }
 
     public String getId() {

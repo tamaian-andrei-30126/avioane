@@ -1,5 +1,4 @@
 package aut.utcluj.isp.ex1;
-//Hehehe
 
 import java.util.Objects;
 
