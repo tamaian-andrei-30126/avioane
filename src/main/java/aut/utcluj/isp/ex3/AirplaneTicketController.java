@@ -1,5 +1,6 @@
 package aut.utcluj.isp.ex3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ public class AirplaneTicketController {
     private List<AirplaneTicket> tickets;
 
     public AirplaneTicketController() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        tickets = new ArrayList<>();
     }
 
     /**
@@ -18,7 +19,15 @@ public class AirplaneTicketController {
      * @param airplaneTicket - airplane ticket object
      */
     public void addNewTicket(final AirplaneTicket airplaneTicket) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(airplaneTicket != null){
+            if(tickets.contains(airplaneTicket)){
+                System.out.println("Ticket with id " + airplaneTicket.getId() + " already exists.");
+            }
+            else {
+                tickets.add(airplaneTicket);
+                System.out.println("Ticket with id " + airplaneTicket.getId() + " has been added.");
+            }
+        }
     }
 
     /**
@@ -27,14 +36,16 @@ public class AirplaneTicketController {
      * @return
      */
     public List<AirplaneTicket> getTickets() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        return tickets;
     }
 
     /**
      * Return total number of tickets
      */
     public int getTotalNumberOfTickets() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        return tickets.size();
     }
 
     /**
@@ -43,7 +54,19 @@ public class AirplaneTicketController {
      * @param ticketId - unique ticket id
      */
     public void removeTicketById(final String ticketId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        boolean existsTicket = false;
+        if(ticketId != null) {
+            for (int i = 0 ; i < tickets.size(); i++){
+                if (tickets.get(i).getId().equals(ticketId)){
+                    tickets.remove(tickets.get(i));
+                    existsTicket = true;
+                }
+            }
+            if (!existsTicket){
+                System.out.println("Ticket with id " + ticketId + " does not exist.");
+            }
+        }
     }
 
     /**
@@ -53,7 +76,18 @@ public class AirplaneTicketController {
      * @param destination - new destination
      */
     public void updateTicketDestination(final String ticketId, final String destination) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean existsTicket = false;
+        if(ticketId != null && destination != null){
+            for (AirplaneTicket ticket : tickets) {
+                if (ticket.getId().equals(ticketId)) {
+                    ticket.setDestination(destination);
+                    existsTicket = true;
+                }
+            }
+            if(!existsTicket){
+                System.out.println("Ticket with id " + ticketId + " does not exist.");
+            }
+        }
     }
 
     /**
@@ -64,7 +98,21 @@ public class AirplaneTicketController {
      * @return
      */
     public List<AirplaneTicket> filterTicketsBetweenMinMaxPrice(final Double minPrice, final Double maxPrice) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<AirplaneTicket> filteredTickets = new ArrayList<>();
+        int i;
+        for (i = 0 ; i < tickets.size(); i++){
+            filteredTickets.add(tickets.get(i));
+        }
+        i=0;
+        while(i < filteredTickets.size()){
+            if(filteredTickets.get(i).getPrice() < minPrice || filteredTickets.get(i).getPrice() > maxPrice){
+                filteredTickets.remove(i);
+            }
+            else {
+                i++;
+            }
+        }
+        return filteredTickets;
     }
 
     /**
@@ -76,6 +124,25 @@ public class AirplaneTicketController {
      * @return
      */
     public List<AirplaneTicket> filterTicketsWithPriceAndDestination(final Double minPrice, final Double maxPrice, final String destination) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<AirplaneTicket> filteredTickets = new ArrayList<>();
+        int i;
+        for (i = 0 ; i < tickets.size(); i++){
+            filteredTickets.add(tickets.get(i));
+        }
+        i=0;
+        boolean correctDestination;
+        while(i < filteredTickets.size()){
+            correctDestination = filteredTickets.get(i).getDestination().equals(destination);
+            if((filteredTickets.get(i).getPrice() < minPrice || filteredTickets.get(i).getPrice() > maxPrice)){
+                filteredTickets.remove(i);
+            }
+            else if(!correctDestination) {
+                filteredTickets.remove(i);
+            }
+            else {
+                i++;
+            }
+        }
+        return filteredTickets;
     }
 }
