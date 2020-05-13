@@ -1,6 +1,9 @@
 package aut.utcluj.isp.ex4;
 
 
+import com.sun.deploy.security.SelectableSecurityManager;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,12 @@ public class AirplaneTicketController {
     /**
      * Generate default tickets
      */
+
+    public AirplaneTicketController() {
+        tickets = new ArrayList<>();
+        generateTickets();
+    }
+
     private void generateTickets() {
         for (int i = 0; i < DEFAULT_NUMBER_OF_TICKETS; i++) {
             String destination;
@@ -51,8 +60,18 @@ public class AirplaneTicketController {
      * @return
      * @apiNote: this method should throw {@link NoTicketAvailableException} exception if ticket not found
      */
-    public AirplaneTicket getTicketDetails(final String ticketId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public AirplaneTicket getTicketDetails(final String ticketId) throws NoTicketAvailableException {
+
+        AirplaneTicket airplaneTicket = new AirplaneTicket(ticketId, null, null);
+        int i = 0;
+        for (i = 0; i < tickets.size(); i++)
+            if (airplaneTicket.getId().equals(tickets.get(i).getId())) {
+                return tickets.get(i);
+            }
+        if (i == tickets.size()) {
+            throw new NoTicketAvailableException("No ticket id");
+        }
+        return airplaneTicket;
     }
 
     /**
@@ -66,8 +85,23 @@ public class AirplaneTicketController {
      * {@link NoDestinationAvailableException} - if destination not supported by AirplaneTicketController
      * {@link NoTicketAvailableException} - if destination exists but no ticket with NEW status available
      */
-    public void buyTicket(final String destination, final String customerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void buyTicket(final String destination, final String customerId) throws NoDestinationAvailableException, NoTicketAvailableException {
+        int i;
+        for (i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getStatus().equals(TicketStatus.NEW) && destination.equals(tickets.get(i).getDestination())) {
+                tickets.get(i).setStatus(TicketStatus.ACTIVE);
+                tickets.get(i).setCustomerId(customerId);
+                System.out.println("Ticket Bought for destination " + destination);
+                break;
+            }
+        }
+
+        if (i == tickets.size() && (destination.equals("Cluj-Napoca") || destination.equals("Baia Mare") || destination.equals("Timisoara"))) {
+            throw new NoTicketAvailableException("All tickets sold out for destination " + destination);
+        } else if (i == tickets.size() && (!destination.equals("Cluj-Napoca") && !destination.equals("Baia Mare") && !destination.equals("Timisoara"))) {
+            throw new NoDestinationAvailableException("Destination Incorect!");
+        }
+
     }
 
     /**
@@ -80,9 +114,37 @@ public class AirplaneTicketController {
      * {@link NoTicketAvailableException} - if ticket with this id does not exist
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
      */
-    public void cancelTicket(final String ticketId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void cancelTicket(final String ticketId) throws TicketNotAssignedException, NoTicketAvailableException {
+
+        int i;
+        boolean checkifticketexist = false;
+        boolean ticketnotassigned = false;
+        for (i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getId().equals(ticketId) && tickets.get(i).getStatus().equals(TicketStatus.ACTIVE)) {
+                tickets.get(i).setStatus(TicketStatus.CANCELED);
+            }
+        }
+        for (i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getId().equals(ticketId)) {
+                checkifticketexist = true;
+            }
+
+        }
+        if (checkifticketexist == false) {
+            throw new NoTicketAvailableException("Ticket with this ID doesn't exist!");
+        }
+
+        for (i = 0; i < tickets.size(); i++)
+            if (tickets.get(i).getStatus().equals(TicketStatus.NEW) && tickets.get(i).getId().equals(ticketId)) {
+                ticketnotassigned = true;
+            }
+        if (ticketnotassigned == true) {
+                    throw new TicketNotAssignedException("Ticket can't be cancel because is not Active!");
+        }
+
+
     }
+
 
     /**
      * Change ticket customer name by specific ticket id
@@ -95,7 +157,13 @@ public class AirplaneTicketController {
      * {@link TicketNotAssignedException} - if ticket is not assigned to any user
      */
     public void changeTicketCustomerId(final String ticketId, final String customerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int i;
+        for(i=0;i<tickets.size();i++)
+            if(tickets.get(i).getStatus().equals(TicketStatus.ACTIVE) && tickets.get(i).getId().equals(ticketId))
+            {
+                tickets.get(i).setCustomerId(customerId);
+                System.out.println("Numele ");
+            }
     }
 
     /**
