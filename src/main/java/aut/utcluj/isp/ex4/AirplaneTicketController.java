@@ -2,8 +2,10 @@ package aut.utcluj.isp.ex4;
 
 
 import com.sun.deploy.security.SelectableSecurityManager;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,14 +124,11 @@ public class AirplaneTicketController {
         for (i = 0; i < tickets.size(); i++) {
             if (tickets.get(i).getId().equals(ticketId) && tickets.get(i).getStatus().equals(TicketStatus.ACTIVE)) {
                 tickets.get(i).setStatus(TicketStatus.CANCELED);
-            }
-        }
-        for (i = 0; i < tickets.size(); i++) {
-            if (tickets.get(i).getId().equals(ticketId)) {
                 checkifticketexist = true;
+                System.out.println("Ticket is canceled!");
             }
-
         }
+
         if (checkifticketexist == false) {
             throw new NoTicketAvailableException("Ticket with this ID doesn't exist!");
         }
@@ -139,7 +138,7 @@ public class AirplaneTicketController {
                 ticketnotassigned = true;
             }
         if (ticketnotassigned == true) {
-                    throw new TicketNotAssignedException("Ticket can't be cancelled because it is not Active!");
+            throw new TicketNotAssignedException("Ticket can't be cancel because is not Active!");
         }
 
 
@@ -158,12 +157,28 @@ public class AirplaneTicketController {
      */
     public void changeTicketCustomerId(final String ticketId, final String customerId) {
         int i;
-        for(i=0;i<tickets.size();i++)
-            if(tickets.get(i).getStatus().equals(TicketStatus.ACTIVE) && tickets.get(i).getId().equals(ticketId))
-            {
+        boolean ticketnotassigned = false;
+        boolean checkifidexists = false;
+        for (i = 0; i < tickets.size(); i++)
+            if (tickets.get(i).getId().equals(ticketId)) {
+                checkifidexists = true;
+                System.out.println("CostumerId Changed!");
                 tickets.get(i).setCustomerId(customerId);
-                System.out.println("Numele ");
+                System.out.println("New CostumerId este:" + tickets.get(i).getCustomerId());
             }
+
+        if (checkifidexists == false) {
+            throw new NoTicketAvailableException("Ticket with this ID doesn't exist!");
+        }
+        for (i = 0; i < tickets.size(); i++)
+            if (tickets.get(i).getStatus().equals(TicketStatus.NEW) && tickets.get(i).getId().equals(ticketId)) {
+                ticketnotassigned = true;
+            }
+        if (ticketnotassigned == true) {
+            throw new TicketNotAssignedException("Ticket costumerId can't be change because is not Active!");
+        }
+
+
     }
 
     /**
@@ -174,7 +189,13 @@ public class AirplaneTicketController {
      * @return
      */
     public List<AirplaneTicket> filterTicketsByStatus(final TicketStatus status) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<AirplaneTicket> filtertickets = new ArrayList<>();
+        int i;
+        for (i = 0; i < tickets.size(); i++)
+            if (tickets.get(i).getStatus().equals(status)) {
+                filtertickets.add(tickets.get(i));
+            }
+        return filtertickets;
     }
 
     /**
@@ -184,6 +205,30 @@ public class AirplaneTicketController {
      * @apiNote: only tickets with available name should be returned
      */
     public Map<String, List<AirplaneTicket>> groupTicketsByCustomerId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Map<String, List<AirplaneTicket>> ticketbycostumername = new HashMap<>();
+        int i;
+        int j;
+        String namex;
+        List<AirplaneTicket> grouptickets;
+        for (i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getStatus().equals(TicketStatus.ACTIVE)) {
+                namex = tickets.get(i).getCustomerId();
+                grouptickets = new ArrayList<>();
+                for (j = 0; j < tickets.size(); j++) {
+                    if (tickets.get(j).getCustomerId() != null && tickets.get(j).getCustomerId().equals(namex))
+                        grouptickets.add(tickets.get(j));
+                }
+
+                if (!ticketbycostumername.containsKey(namex))
+                    ticketbycostumername.put(namex, grouptickets);
+
+            }
+
+        }
+
+        System.out.println(ticketbycostumername.keySet().size());
+        return ticketbycostumername;
+
+
     }
 }
