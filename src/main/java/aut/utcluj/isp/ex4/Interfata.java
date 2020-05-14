@@ -5,7 +5,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import java.awt.Font;
@@ -25,6 +24,10 @@ public class Interfata extends JFrame {
     private JButton enterB2;
     private JTextField destinationTF1, customerIdTF1;
 
+    private JFrame cancelTicketFrame;
+    private JButton enterB3;
+    private JTextField ticketIdTF2;
+
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
         this.atc = atc;
         this.mainFrameInitialize();
@@ -32,6 +35,7 @@ public class Interfata extends JFrame {
         this.getTicketsBFrame();
         this.getTicketDetailsBFrame();
         this.buyTicketBFrame();
+        this.cancelTicketBFrame();
     }
 
     private void mainFrameInitialize() {
@@ -106,6 +110,32 @@ public class Interfata extends JFrame {
         this.getTicketDetailsFrame.pack();
     }
 
+    public void cancelTicketBFrame() {
+        this.cancelTicketFrame = new JFrame();
+        this.cancelTicketFrame.setLayout(new GridLayout(2, 2));
+
+        this.cancelTicketFrame.setVisible(false);
+        this.cancelTicketFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.cancelTicketFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+        this.cancelTicketFrame.setLocationRelativeTo(null);
+
+        final JLabel ticketIdLabel = new JLabel("Enter the ID of the ticket");
+        ticketIdLabel.setBounds(10, 5, 150, 30);
+        this.cancelTicketFrame.add(ticketIdLabel);
+
+        this.ticketIdTF2 = new JTextField("");
+        this.ticketIdTF2.setBounds(165, 5, 150, 30);
+        this.ticketIdTF2.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.cancelTicketFrame.add(ticketIdTF2);
+
+        this.enterB3 = new JButton("Enter");
+        this.enterB3.setBounds(100, 20, 30, 30);
+        this.enterB3.setFont(new Font("Cooper Black", Font.BOLD, 15));
+        this.cancelTicketFrame.add(enterB3);
+
+        this.cancelTicketFrame.pack();
+    }
+
     public void buyTicketBFrame() {
         this.buyTicketFrame = new JFrame();
         this.buyTicketFrame.setLayout(new GridLayout(3, 2));
@@ -148,8 +178,6 @@ public class Interfata extends JFrame {
     private void FrameHandlers() {
         this.getTicketsB.addActionListener(gettickets -> {
             getTicketsFrame.setVisible(true);
-            //JOptionPane.showMessageDialog(null, "Ticket bought succesfully", JOptionPane.OK_OPTION);
-
 
         });
         this.getTicketDetailsB.addActionListener(getticketdetails -> {
@@ -161,22 +189,34 @@ public class Interfata extends JFrame {
             this.enterB2.addActionListener(enterb2 -> {
                 try {
                     atc.buyTicket(this.destinationTF1.getText(), this.customerIdTF1.getText());
-                    buyTicketFrame.setVisible(false);
-                    //JOptionPane.showMessageDialog(buyTicketFrame, "Ticket bought succesfully", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ticket bought succesfully", "", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NoTicketAvailableException e) {
-                    // JOptionPane.showMessageDialog(buyTicketFrame, "All tickets are sold for destination "+this.destinationTF1.getText(),JOptionPane.ERROR_MESSAGE);
-                    buyTicketFrame.setVisible(true);
+                    JOptionPane.showMessageDialog(buyTicketFrame, "All tickets are sold for destination " + this.destinationTF1.getText(), "", JOptionPane.WARNING_MESSAGE);
                     e.printStackTrace();
-                } catch(NoDestinationAvailableException e){
-                    //JOptionPane.showMessageDialog(buyTicketFrame, "This destination is not available",JOptionPane.ERROR_MESSAGE);
-                    buyTicketFrame.setVisible(true);
+                } catch (NoDestinationAvailableException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "This destination is not available", "", JOptionPane.WARNING_MESSAGE);
                     e.printStackTrace();
                 }
+                this.destinationTF1.setText("");
+                this.customerIdTF1.setText("");
             });
         });
 
         this.cancelTicketB.addActionListener(cancelticket -> {
-
+            cancelTicketFrame.setVisible(true);
+            this.enterB3.addActionListener(enterb3->{
+                try {
+                    atc.cancelTicket(this.ticketIdTF2.getText());
+                    JOptionPane.showMessageDialog(null, "Ticket cancelled succesfully", "", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NoTicketAvailableException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn;t exist!", "", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
+                } catch (TicketNotAssignedException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket can't be cancelled because it is not Active!", "", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
+                }
+                this.ticketIdTF2.setText("");
+            });
         });
         this.changeTicketCustomerIdB.addActionListener(changeticketcustomerid -> {
 

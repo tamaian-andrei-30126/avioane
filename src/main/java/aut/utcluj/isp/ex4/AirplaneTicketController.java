@@ -139,7 +139,7 @@ public class AirplaneTicketController {
                 ticketnotassigned = true;
             }
         if (ticketnotassigned == true) {
-                    throw new TicketNotAssignedException("Ticket can't be cancel because is not Active!");
+                    throw new TicketNotAssignedException("Ticket can't be cancelled because it is not Active!");
         }
 
 
