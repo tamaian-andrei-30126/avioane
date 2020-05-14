@@ -204,12 +204,12 @@ public class Interfata extends JFrame {
 
         this.cancelTicketB.addActionListener(cancelticket -> {
             cancelTicketFrame.setVisible(true);
-            this.enterB3.addActionListener(enterb3->{
+            this.enterB3.addActionListener(enterb3 -> {
                 try {
                     atc.cancelTicket(this.ticketIdTF2.getText());
                     JOptionPane.showMessageDialog(null, "Ticket cancelled succesfully", "", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NoTicketAvailableException e) {
-                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn;t exist!", "", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn't exist!", "", JOptionPane.WARNING_MESSAGE);
                     e.printStackTrace();
                 } catch (TicketNotAssignedException e) {
                     JOptionPane.showMessageDialog(buyTicketFrame, "Ticket can't be cancelled because it is not Active!", "", JOptionPane.WARNING_MESSAGE);
@@ -219,7 +219,20 @@ public class Interfata extends JFrame {
             });
         });
         this.changeTicketCustomerIdB.addActionListener(changeticketcustomerid -> {
-
+            cancelTicketFrame.setVisible(true);
+            this.enterB4.addActionListener(enterb4 -> {
+                try {
+                    atc.cancelTicket(this.ticketIdTF2.getText());
+                    JOptionPane.showMessageDialog(null, "Ticket cancelled succesfully", "", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NoTicketAvailableException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn't exist!", "", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
+                } catch (TicketNotAssignedException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket can't be cancelled because it is not Active!", "", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
+                }
+                this.ticketIdTF2.setText("");
+            });
         });
 
         this.filterTicketsByStatusB.addActionListener(filterticket -> {
