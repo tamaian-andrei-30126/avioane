@@ -1,7 +1,9 @@
-package isp.lab9.ExemleProf.Ex1;
+package aut.utcluj.isp.ExemleProf.Ex1;
 
-import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TestTheDialog extends JFrame implements ActionListener {
 

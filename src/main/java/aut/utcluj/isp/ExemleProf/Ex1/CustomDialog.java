@@ -1,4 +1,4 @@
-package isp.lab9.ExemleProf.Ex1;
+package aut.utcluj.isp.ExemleProf.Ex1;
 
 import javax.swing.*;
 
