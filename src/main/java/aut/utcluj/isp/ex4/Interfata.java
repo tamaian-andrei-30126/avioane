@@ -26,7 +26,11 @@ public class Interfata extends JFrame {
 
     private JFrame cancelTicketFrame;
     private JButton enterB3;
-    private JTextField ticketIdTF2;
+    private JTextField ticketIdTF2, customerIdTF2;
+
+    private JFrame changeTicketCustomerIdFrame;
+    private JButton enterB4;
+    private JTextField ticketIdTF3;
 
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
         this.atc = atc;
@@ -36,6 +40,7 @@ public class Interfata extends JFrame {
         this.getTicketDetailsBFrame();
         this.buyTicketBFrame();
         this.cancelTicketBFrame();
+        this.changeTicketCustomerIdBFrame();
     }
 
     private void mainFrameInitialize() {
@@ -54,7 +59,7 @@ public class Interfata extends JFrame {
         this.cancelTicketB = new JButton("Cancel ticket");
         this.mainFrame.add(cancelTicketB);
 
-        this.changeTicketCustomerIdB = new JButton("Change ticket customere id");
+        this.changeTicketCustomerIdB = new JButton("Change ticket's customer id");
         this.mainFrame.add(changeTicketCustomerIdB);
 
         this.filterTicketsByStatusB = new JButton("Filter tickets by status");
@@ -173,6 +178,43 @@ public class Interfata extends JFrame {
 
         this.buyTicketFrame.pack();
     }
+    public void changeTicketCustomerIdBFrame(){
+        this.changeTicketCustomerIdFrame = new JFrame();
+        this.changeTicketCustomerIdFrame.setLayout(new GridLayout(3, 2));
+
+        this.changeTicketCustomerIdFrame.setVisible(false);
+        this.changeTicketCustomerIdFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.changeTicketCustomerIdFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+        this.changeTicketCustomerIdFrame.setLocationRelativeTo(null);
+
+        final JLabel ticketLabel = new JLabel("Enter the ID of the ticket");
+        ticketLabel.setBounds(10, 5, 150, 30);
+        ticketLabel.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.changeTicketCustomerIdFrame.add(ticketLabel);
+
+        this.ticketIdTF3 = new JTextField("");
+        this.ticketIdTF3.setBounds(165, 5, 150, 30);
+        this.ticketIdTF3.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.changeTicketCustomerIdFrame.add(ticketIdTF3);
+
+        final JLabel customerIdLabel = new JLabel("Enter the new customer ID");
+        customerIdLabel.setBounds(10, 5, 150, 30);
+        customerIdLabel.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.changeTicketCustomerIdFrame.add(customerIdLabel);
+
+        this.customerIdTF2 = new JTextField("");
+        this.customerIdTF2.setBounds(165, 5, 150, 30);
+        this.customerIdTF2.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.changeTicketCustomerIdFrame.add(customerIdTF2);
+
+
+        this.enterB4 = new JButton("Enter");
+        this.enterB4.setBounds(100, 20, 30, 30);
+        this.enterB4.setFont(new Font("Cooper Black", Font.BOLD, 15));
+        this.changeTicketCustomerIdFrame.add(enterB4);
+
+        this.changeTicketCustomerIdFrame.pack();
+    }
 
 
     private void FrameHandlers() {
@@ -219,11 +261,11 @@ public class Interfata extends JFrame {
             });
         });
         this.changeTicketCustomerIdB.addActionListener(changeticketcustomerid -> {
-            cancelTicketFrame.setVisible(true);
+            changeTicketCustomerIdFrame.setVisible(true);
             this.enterB4.addActionListener(enterb4 -> {
                 try {
-                    atc.cancelTicket(this.ticketIdTF2.getText());
-                    JOptionPane.showMessageDialog(null, "Ticket cancelled succesfully", "", JOptionPane.INFORMATION_MESSAGE);
+                    atc.changeTicketCustomerId(this.ticketIdTF3.getText(),this.customerIdTF2.getText());
+                    JOptionPane.showMessageDialog(null, "Customer ID changed succesfully", "", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NoTicketAvailableException e) {
                     JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn't exist!", "", JOptionPane.WARNING_MESSAGE);
                     e.printStackTrace();
