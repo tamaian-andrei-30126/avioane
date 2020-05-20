@@ -28,14 +28,14 @@ public class Interfata extends JFrame {
     private JButton enterB4;
     private JTextField ticketIdTF3;
 
-    private JList jlistGetTickets;
+    private JList jlist;
     private List<AirplaneTicket> tickets;
+
 
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
         this.atc = atc;
         this.mainFrameInitialize();
         this.FrameHandlers();
-        // this.getTicketsBFrame();
         this.getTicketDetailsBFrame();
         this.buyTicketBFrame();
         this.cancelTicketBFrame();
@@ -89,7 +89,7 @@ public class Interfata extends JFrame {
         enterTicketIdLabel.setFont(new Font("Cooper Black", Font.PLAIN, 15));
         this.getTicketDetailsFrame.add(enterTicketIdLabel);
 
-        this.ticketIdTF1 = new JTextField("****");
+        this.ticketIdTF1 = new JTextField("");
         this.ticketIdTF1.setBounds(165, 5, 150, 30);
         this.ticketIdTF1.setFont(new Font("Cooper Black", Font.PLAIN, 15));
         this.getTicketDetailsFrame.add(ticketIdTF1);
@@ -211,14 +211,14 @@ public class Interfata extends JFrame {
             this.getTicketsFrame = new JFrame();
             this.getTicketsFrame.setLayout(new GridLayout(2, 1));
             this.getTicketsFrame.setVisible(true);
-            tickets=new ArrayList<>();
-            tickets=atc.getTickets();
-            String[] data=new String[tickets.size()];
-            for(int i=0;i<tickets.size();i++){
-                data[i]=tickets.get(i).toString();
+            tickets = new ArrayList<>();
+            tickets = atc.getTickets();
+            String[] data = new String[tickets.size()];
+            for (int i = 0; i < tickets.size(); i++) {
+                data[i] = tickets.get(i).toString();
             }
-            jlistGetTickets = new JList(data);
-            JScrollPane jScrollPane = new JScrollPane(jlistGetTickets);
+            jlist = new JList(data);
+            JScrollPane jScrollPane = new JScrollPane(jlist);
             this.getTicketsFrame.add(jScrollPane);
 
             JButton exitButton = new JButton("Exit");
@@ -237,6 +237,43 @@ public class Interfata extends JFrame {
         this.getTicketDetailsB.addActionListener(getticketdetails -> {
 
             getTicketDetailsFrame.setVisible(true);
+            this.enterB1.addActionListener(enterb1 -> {
+                try {
+                    int i;
+                    atc.getTicketDetails(this.ticketIdTF1.getText());
+                    ;
+                    JFrame enter = new JFrame();
+                    enter.setLayout(new GridLayout(2, 1));
+                    enter.setVisible(true);
+                    tickets = new ArrayList<>();
+                    tickets = atc.getTickets();
+                    String[] data = new String[tickets.size()];
+                    for (i = 0; i < tickets.size(); i++) {
+                        if (tickets.get(i).getId().equals(this.ticketIdTF1.getText())) {
+                            break;
+                        }
+                    }
+                    data[0] = tickets.get(i).toString();
+                    jlist = new JList(data);
+                    enter.add(jlist);
+
+                    JButton exitButton = new JButton("Exit");
+                    enter.add(exitButton);
+
+                    enter.setSize(500, 500);
+                    enter.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+                    enter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                    enter.setLocationRelativeTo(null);
+                    enter.pack();
+                    exitButton.addActionListener(exitbutton -> {
+                        enter.setVisible(false);
+                    });
+                } catch (NoTicketAvailableException e) {
+                    JOptionPane.showMessageDialog(buyTicketFrame, "Ticket id not found", "", JOptionPane.WARNING_MESSAGE);
+                    e.printStackTrace();
+                }
+            });
+            this.ticketIdTF1.setText("");
         });
         this.buyTicketB.addActionListener(buyticket -> {
             buyTicketFrame.setVisible(true);
