@@ -1,15 +1,11 @@
 package aut.utcluj.isp.ex4;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Interfata extends JFrame {
     private final AirplaneTicketController atc;
@@ -32,11 +28,14 @@ public class Interfata extends JFrame {
     private JButton enterB4;
     private JTextField ticketIdTF3;
 
+    private JList jlistGetTickets;
+    private List<AirplaneTicket> tickets;
+
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
         this.atc = atc;
         this.mainFrameInitialize();
         this.FrameHandlers();
-        this.getTicketsBFrame();
+        // this.getTicketsBFrame();
         this.getTicketDetailsBFrame();
         this.buyTicketBFrame();
         this.cancelTicketBFrame();
@@ -74,17 +73,6 @@ public class Interfata extends JFrame {
         this.mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setVisible(true);
-    }
-
-    public void getTicketsBFrame() {
-        this.getTicketsFrame = new JFrame();
-        this.getTicketsFrame.setLayout(new GridLayout(5, 2));
-        this.getTicketsFrame.setVisible(false);
-
-        this.getTicketsFrame.setSize(500, 500);
-        this.getTicketsFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
-        this.getTicketsFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        this.getTicketsFrame.setLocationRelativeTo(null);
     }
 
     public void getTicketDetailsBFrame() {
@@ -178,7 +166,8 @@ public class Interfata extends JFrame {
 
         this.buyTicketFrame.pack();
     }
-    public void changeTicketCustomerIdBFrame(){
+
+    public void changeTicketCustomerIdBFrame() {
         this.changeTicketCustomerIdFrame = new JFrame();
         this.changeTicketCustomerIdFrame.setLayout(new GridLayout(3, 2));
 
@@ -219,7 +208,30 @@ public class Interfata extends JFrame {
 
     private void FrameHandlers() {
         this.getTicketsB.addActionListener(gettickets -> {
-            getTicketsFrame.setVisible(true);
+            this.getTicketsFrame = new JFrame();
+            this.getTicketsFrame.setLayout(new GridLayout(2, 1));
+            this.getTicketsFrame.setVisible(true);
+            tickets=new ArrayList<>();
+            tickets=atc.getTickets();
+            String[] data=new String[tickets.size()];
+            for(int i=0;i<tickets.size();i++){
+                data[i]=tickets.get(i).toString();
+            }
+            jlistGetTickets = new JList(data);
+            JScrollPane jScrollPane = new JScrollPane(jlistGetTickets);
+            this.getTicketsFrame.add(jScrollPane);
+
+            JButton exitButton = new JButton("Exit");
+            this.getTicketsFrame.add(exitButton);
+
+            this.getTicketsFrame.setSize(500, 500);
+            this.getTicketsFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+            this.getTicketsFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            this.getTicketsFrame.setLocationRelativeTo(null);
+            this.getTicketsFrame.pack();
+            exitButton.addActionListener(exitbutton -> {
+                this.getTicketsFrame.setVisible(false);
+            });
 
         });
         this.getTicketDetailsB.addActionListener(getticketdetails -> {
@@ -264,7 +276,7 @@ public class Interfata extends JFrame {
             changeTicketCustomerIdFrame.setVisible(true);
             this.enterB4.addActionListener(enterb4 -> {
                 try {
-                    atc.changeTicketCustomerId(this.ticketIdTF3.getText(),this.customerIdTF2.getText());
+                    atc.changeTicketCustomerId(this.ticketIdTF3.getText(), this.customerIdTF2.getText());
                     JOptionPane.showMessageDialog(null, "Customer ID changed succesfully", "", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NoTicketAvailableException e) {
                     JOptionPane.showMessageDialog(buyTicketFrame, "Ticket with this ID doesn't exist!", "", JOptionPane.WARNING_MESSAGE);

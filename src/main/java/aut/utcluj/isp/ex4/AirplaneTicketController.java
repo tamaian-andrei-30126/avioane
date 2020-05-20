@@ -98,7 +98,7 @@ public class AirplaneTicketController {
             }
         }
 
-        if (i == tickets.size() && (destination.equals("Cluj-Napoca") || destination.equals("Baia Mare") || destination.equals("Timisoara"))) {
+        if ((i == tickets.size()) && ((destination.equals("Cluj-Napoca") || destination.equals("Baia Mare") || destination.equals("Timisoara")))) {
             throw new NoTicketAvailableException("All tickets sold out for destination " + destination);
         } else if (i == tickets.size() && (!destination.equals("Cluj-Napoca") && !destination.equals("Baia Mare") && !destination.equals("Timisoara"))) {
             throw new NoDestinationAvailableException("Destination Incorect!");
