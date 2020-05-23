@@ -5,7 +5,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Interfata extends JFrame {
     private final AirplaneTicketController atc;
@@ -31,6 +33,14 @@ public class Interfata extends JFrame {
     private JList jlist;
     private List<AirplaneTicket> tickets;
 
+    private JFrame groupTicketsByCustomerIdFrame;
+    private Map<String, List<AirplaneTicket>> grouptickets;
+
+    private JFrame filterTicketsByStatusFrame;
+    private List<AirplaneTicket> filterTickets;
+    private JButton enterB5;
+    private JTextField statusTicketTF1;
+
 
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
         this.atc = atc;
@@ -40,6 +50,7 @@ public class Interfata extends JFrame {
         this.buyTicketBFrame();
         this.cancelTicketBFrame();
         this.changeTicketCustomerIdBFrame();
+        this.filterTicketsByStatusBFrame();
     }
 
     private void mainFrameInitialize() {
@@ -205,6 +216,33 @@ public class Interfata extends JFrame {
         this.changeTicketCustomerIdFrame.pack();
     }
 
+    public void filterTicketsByStatusBFrame() {
+        this.filterTicketsByStatusFrame = new JFrame();
+        this.filterTicketsByStatusFrame.setLayout(new GridLayout(2, 2));
+
+        this.filterTicketsByStatusFrame.setVisible(true);
+        this.filterTicketsByStatusFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.filterTicketsByStatusFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+        this.filterTicketsByStatusFrame.setLocationRelativeTo(null);
+
+        final JLabel enterStatusTicketLabel = new JLabel("Enter the status of the ticket");
+        enterStatusTicketLabel.setBounds(10, 5, 150, 30);
+        enterStatusTicketLabel.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.filterTicketsByStatusFrame.add(enterStatusTicketLabel);
+
+        this.statusTicketTF1 = new JTextField("");
+        this.statusTicketTF1.setBounds(165, 5, 150, 30);
+        this.statusTicketTF1.setFont(new Font("Cooper Black", Font.PLAIN, 15));
+        this.filterTicketsByStatusFrame.add(this.statusTicketTF1);
+
+
+        this.enterB5 = new JButton("Enter");
+        this.enterB5.setBounds(100, 20, 30, 30);
+        this.enterB5.setFont(new Font("Cooper Black", Font.BOLD, 15));
+        this.getTicketDetailsFrame.add(this.enterB5);
+
+        this.getTicketDetailsFrame.pack();
+    }
 
     private void FrameHandlers() {
         this.getTicketsB.addActionListener(gettickets -> {
@@ -240,13 +278,13 @@ public class Interfata extends JFrame {
             this.enterB1.addActionListener(enterb1 -> {
                 try {
                     int i;
-                    atc.getTicketDetails(this.ticketIdTF1.getText());
-                    ;
+                    //atc.getTicketDetails(this.ticketIdTF1.getText());
                     JFrame enter = new JFrame();
                     enter.setLayout(new GridLayout(2, 1));
                     enter.setVisible(true);
                     tickets = new ArrayList<>();
-                    tickets = atc.getTickets();
+                   // tickets = atc.getTicketDetails(this.ticketIdTF1.getText());
+                    tickets=atc.getTickets();
                     String[] data = new String[tickets.size()];
                     for (i = 0; i < tickets.size(); i++) {
                         if (tickets.get(i).getId().equals(this.ticketIdTF1.getText())) {
@@ -254,6 +292,9 @@ public class Interfata extends JFrame {
                         }
                     }
                     data[0] = tickets.get(i).toString();
+                    /*for (int i = 0; i < tickets.size(); i++) {
+                        data[i] = tickets.get(i).toString();
+                    }*/
                     jlist = new JList(data);
                     enter.add(jlist);
 
@@ -327,9 +368,63 @@ public class Interfata extends JFrame {
         });
 
         this.filterTicketsByStatusB.addActionListener(filterticket -> {
+            filterTicketsByStatusFrame.setVisible(true);
+            this.enterB5.addActionListener(enterb5 -> {
+                int i;
+                JFrame enter = new JFrame();
+                enter.setLayout(new GridLayout(2, 1));
+                enter.setVisible(true);
+                filterTickets = new ArrayList<>();
+                filterTickets = atc.getTickets();//atc.filterTicketsByStatus(this.statusTicketTF1.getText());
+                String[] data = new String[filterTickets.size()];
+                for (i = 0; i < filterTickets.size(); i++) {
+                    if (filterTickets.get(i).getStatus().equals(this.ticketIdTF1.getText())) {
+                        data[i]=tickets.get(i).toString();
+                    }
+                }
+                jlist = new JList(data);
+                enter.add(jlist);
+
+                JButton exitButton = new JButton("Exit");
+                enter.add(exitButton);
+
+                enter.setSize(500, 500);
+                enter.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+                enter.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                enter.setLocationRelativeTo(null);
+                enter.pack();
+                exitButton.addActionListener(exitbutton -> {
+                    enter.setVisible(false);
+                });
+            });
+            this.statusTicketTF1.setText("");
 
         });
         this.groupTicketsByCustomerIdB.addActionListener(groupticket -> {
+            this.groupTicketsByCustomerIdFrame = new JFrame();
+            this.groupTicketsByCustomerIdFrame.setLayout(new GridLayout(2, 1));
+            this.groupTicketsByCustomerIdFrame.setVisible(true);
+            grouptickets = new HashMap<>();
+            grouptickets = atc.groupTicketsByCustomerId();
+            String[] data = new String[grouptickets.size()];
+            for (int i = 0; i < grouptickets.size(); i++) {
+                data[i] = grouptickets.get(i).toString();
+            }
+            jlist = new JList(data);
+            JScrollPane jScrollPane = new JScrollPane(jlist);
+            this.groupTicketsByCustomerIdFrame.add(jScrollPane);
+
+            JButton exitButton = new JButton("Exit");
+            this.groupTicketsByCustomerIdFrame.add(exitButton);
+
+            this.groupTicketsByCustomerIdFrame.setSize(500, 500);
+            this.groupTicketsByCustomerIdFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+            this.groupTicketsByCustomerIdFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            this.groupTicketsByCustomerIdFrame.setLocationRelativeTo(null);
+            this.groupTicketsByCustomerIdFrame.pack();
+            exitButton.addActionListener(exitbutton -> {
+                this.groupTicketsByCustomerIdFrame.setVisible(false);
+            });
 
         });
 
