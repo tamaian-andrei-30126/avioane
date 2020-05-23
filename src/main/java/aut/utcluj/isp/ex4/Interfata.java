@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Interfata extends JFrame {
     private final AirplaneTicketController atc;
+    JScrollPane scrollpane;
     private JFrame mainFrame;
     private JButton getTicketsB, getTicketDetailsB, buyTicketB, cancelTicketB, changeTicketCustomerIdB, filterTicketsByStatusB, groupTicketsByCustomerIdB;
 
@@ -77,7 +75,6 @@ public class Interfata extends JFrame {
 
         this.groupTicketsByCustomerIdB = new JButton("Group tickets by customer id");
         this.mainFrame.add(groupTicketsByCustomerIdB);
-        ;
 
         this.mainFrame.pack();
         this.mainFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
@@ -220,7 +217,7 @@ public class Interfata extends JFrame {
         this.filterTicketsByStatusFrame = new JFrame();
         this.filterTicketsByStatusFrame.setLayout(new GridLayout(2, 2));
 
-        this.filterTicketsByStatusFrame.setVisible(true);
+        this.filterTicketsByStatusFrame.setVisible(false);
         this.filterTicketsByStatusFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.filterTicketsByStatusFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
         this.filterTicketsByStatusFrame.setLocationRelativeTo(null);
@@ -239,9 +236,9 @@ public class Interfata extends JFrame {
         this.enterB5 = new JButton("Enter");
         this.enterB5.setBounds(100, 20, 30, 30);
         this.enterB5.setFont(new Font("Cooper Black", Font.BOLD, 15));
-        this.getTicketDetailsFrame.add(this.enterB5);
+        this.filterTicketsByStatusFrame.add(this.enterB5);
 
-        this.getTicketDetailsFrame.pack();
+        this.filterTicketsByStatusFrame.pack();
     }
 
     private void FrameHandlers() {
@@ -277,26 +274,26 @@ public class Interfata extends JFrame {
             getTicketDetailsFrame.setVisible(true);
             this.enterB1.addActionListener(enterb1 -> {
                 try {
-                    int i;
-                    //atc.getTicketDetails(this.ticketIdTF1.getText());
+                    //int i;
                     JFrame enter = new JFrame();
                     enter.setLayout(new GridLayout(2, 1));
                     enter.setVisible(true);
                     tickets = new ArrayList<>();
-                   // tickets = atc.getTicketDetails(this.ticketIdTF1.getText());
-                    tickets=atc.getTickets();
+                    tickets = Collections.singletonList(atc.getTicketDetails(this.ticketIdTF1.getText()));
+                    //tickets = atc.getTickets();
                     String[] data = new String[tickets.size()];
-                    for (i = 0; i < tickets.size(); i++) {
+                    /*for (i = 0; i < tickets.size(); i++) {
                         if (tickets.get(i).getId().equals(this.ticketIdTF1.getText())) {
                             break;
                         }
                     }
-                    data[0] = tickets.get(i).toString();
-                    /*for (int i = 0; i < tickets.size(); i++) {
+                    data[0] = tickets.get(i).toString();*/
+                    for (int i = 0; i < tickets.size(); i++) {
                         data[i] = tickets.get(i).toString();
-                    }*/
+                    }
                     jlist = new JList(data);
-                    enter.add(jlist);
+                    scrollpane = new JScrollPane(jlist);
+                    enter.add(scrollpane);
 
                     JButton exitButton = new JButton("Exit");
                     enter.add(exitButton);
@@ -375,15 +372,16 @@ public class Interfata extends JFrame {
                 enter.setLayout(new GridLayout(2, 1));
                 enter.setVisible(true);
                 filterTickets = new ArrayList<>();
-                filterTickets = atc.getTickets();//atc.filterTicketsByStatus(this.statusTicketTF1.getText());
+                filterTickets = Collections.singletonList(atc.filterTicketsByStatus(this.statusTicketTF1.getText()));
                 String[] data = new String[filterTickets.size()];
                 for (i = 0; i < filterTickets.size(); i++) {
                     if (filterTickets.get(i).getStatus().equals(this.ticketIdTF1.getText())) {
-                        data[i]=tickets.get(i).toString();
+                        data[i] = filterTickets.get(i).toString();
                     }
                 }
                 jlist = new JList(data);
-                enter.add(jlist);
+                scrollpane = new JScrollPane(jlist);
+                enter.add(scrollpane);
 
                 JButton exitButton = new JButton("Exit");
                 enter.add(exitButton);
