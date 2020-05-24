@@ -10,7 +10,6 @@ public class MainScreen {
     public static void main(String[] args) {
         List<AirplaneTicket> tickets = new ArrayList<>();
         final AirplaneTicketController atc = new AirplaneTicketController();
-        tickets = Collections.singletonList(atc.getTicketDetails("ID-0"));
-        System.out.println(tickets.toString());
+
     }
 }

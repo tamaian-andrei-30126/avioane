@@ -32,8 +32,6 @@ public class Interfata extends JFrame {
 
     private JFrame groupTicketsByCustomerIdFrame;
     private Map<String, List<AirplaneTicket>> grouptickets;
-    //private JButton enterB6;
-    // private JTextField customerIdTF3;
 
     private JFrame filterTicketsByStatusFrame;
     private List<AirplaneTicket> filterTickets;
@@ -42,13 +40,14 @@ public class Interfata extends JFrame {
 
 
     private JFrame teamFrame;
-    private JButton teamB, olaB, nicuB, lauB, tamaB, groupB, niculauB;
+    private JButton teamB, olaB, nicuB, lauB, tamaB, groupB, niculauB, cartofB;
     private ImageIcon tamaianPhoto = new ImageIcon("docs/tamaian.png");
     private ImageIcon teamPhoto = new ImageIcon("docs/team.jpg");
     private ImageIcon olariuPhoto = new ImageIcon("docs/olariu.jpg");
-    private ImageIcon niculitaPhoto = new ImageIcon("docs/olariu.jpg");
-    private ImageIcon laurentiuPhoto = new ImageIcon("docs/olariu.jpg");
+    private ImageIcon niculitaPhoto = new ImageIcon("docs/niculita.jpg");
+    private ImageIcon buturaPhoto = new ImageIcon("docs/butura.jpg");
     private ImageIcon niculauPhoto = new ImageIcon("docs/niculau.jpg");
+    private ImageIcon cartofPhoto=new ImageIcon("docs/cartof.jpg");
 
 
     public Interfata(AirplaneTicketController atc) throws HeadlessException {
@@ -61,7 +60,6 @@ public class Interfata extends JFrame {
         this.changeTicketCustomerIdBFrame();
         this.filterTicketsByStatusBFrame();
         this.teamBFrame();
-        //this.groupTicketsByCustomerIdBFrame();
     }
 
     private void mainFrameInitialize() {
@@ -102,7 +100,7 @@ public class Interfata extends JFrame {
 
     private void teamBFrame() {
         this.teamFrame = new JFrame();
-        this.teamFrame.setLayout(new GridLayout(3, 2));
+        this.teamFrame.setLayout(new GridLayout(4, 2));
         this.olaB = new JButton("Olariu Gabriel");
         this.teamFrame.add(olaB);
 
@@ -117,6 +115,9 @@ public class Interfata extends JFrame {
 
         this.niculauB = new JButton("Nicu+Lau");
         this.teamFrame.add(niculauB);
+
+        this.cartofB = new JButton("Cartof");
+        this.teamFrame.add(cartofB);
 
         this.groupB = new JButton("Poza de grup");
         this.teamFrame.add(groupB);
@@ -287,33 +288,6 @@ public class Interfata extends JFrame {
         this.filterTicketsByStatusFrame.pack();
     }
 
-    /*public void groupTicketsByCustomerIdBFrame() {
-        this.groupTicketsByCustomerIdFrame = new JFrame();
-        this.groupTicketsByCustomerIdFrame.setLayout(new GridLayout(2, 2));
-
-        this.groupTicketsByCustomerIdFrame.setVisible(false);
-        this.groupTicketsByCustomerIdFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.groupTicketsByCustomerIdFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
-        this.groupTicketsByCustomerIdFrame.setLocationRelativeTo(null);
-
-        final JLabel customerIdLabel = new JLabel("Enter the ID of the customer");
-        customerIdLabel.setBounds(10, 5, 150, 30);
-        this.groupTicketsByCustomerIdFrame.add(customerIdLabel);
-
-        this.customerIdTF3 = new JTextField("");
-        this.customerIdTF3.setBounds(165, 5, 150, 30);
-        this.customerIdTF3.setFont(new Font("Cooper Black", Font.PLAIN, 15));
-        this.groupTicketsByCustomerIdFrame.add(customerIdTF3);
-
-        this.enterB6 = new JButton("Enter");
-        this.enterB6.setBounds(100, 20, 30, 30);
-        this.enterB6.setFont(new Font("Cooper Black", Font.BOLD, 15));
-        this.groupTicketsByCustomerIdFrame.add(enterB6);
-
-        this.groupTicketsByCustomerIdFrame.pack();
-
-    }*/
-
     private void FrameHandlers() {
         this.getTicketsB.addActionListener(gettickets -> {
             this.getTicketsFrame = new JFrame();
@@ -473,8 +447,6 @@ public class Interfata extends JFrame {
         });
 
         this.groupTicketsByCustomerIdB.addActionListener(groupticket -> {
-            //this.groupTicketsByCustomerIdFrame.setVisible(true);
-            //this.enterB6.addActionListener(enterb6 -> {
             this.groupTicketsByCustomerIdFrame = new JFrame();
             this.groupTicketsByCustomerIdFrame.setLayout(new GridLayout(2, 1));
             this.groupTicketsByCustomerIdFrame.setVisible(true);
@@ -499,8 +471,6 @@ public class Interfata extends JFrame {
             exitButton.addActionListener(exitbutton -> {
                 this.groupTicketsByCustomerIdFrame.setVisible(false);
             });
-            //});
-
         });
 
         this.teamB.addActionListener(teamb -> {
@@ -535,7 +505,7 @@ public class Interfata extends JFrame {
             });
             this.nicuB.addActionListener(nicub -> {
                 JFrame nicuBFrame = new JFrame();
-                nicuBFrame.setContentPane(new JLabel(olariuPhoto));
+                nicuBFrame.setContentPane(new JLabel(niculitaPhoto));
                 nicuBFrame.pack();
                 nicuBFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
                 nicuBFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -544,14 +514,14 @@ public class Interfata extends JFrame {
             });
             this.lauB.addActionListener(laub -> {
                 JFrame lauBFrame = new JFrame();
-                lauBFrame.setContentPane(new JLabel(olariuPhoto));
+                lauBFrame.setContentPane(new JLabel(buturaPhoto));
                 lauBFrame.pack();
                 lauBFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
                 lauBFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 lauBFrame.setLocationRelativeTo(null);
                 lauBFrame.setVisible(true);
             });
-            this.niculauB.addActionListener(laub -> {
+            this.niculauB.addActionListener(niculitab -> {
                 JFrame niculauBFrame = new JFrame();
                 niculauBFrame.setContentPane(new JLabel(niculauPhoto));
                 niculauBFrame.pack();
@@ -559,6 +529,15 @@ public class Interfata extends JFrame {
                 niculauBFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 niculauBFrame.setLocationRelativeTo(null);
                 niculauBFrame.setVisible(true);
+            });
+            this.cartofB.addActionListener(cartofb -> {
+                JFrame cartofBFrame = new JFrame();
+                cartofBFrame.setContentPane(new JLabel(cartofPhoto));
+                cartofBFrame.pack();
+                cartofBFrame.setIconImage(new ImageIcon("docs/airplane.png").getImage());
+                cartofBFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                cartofBFrame.setLocationRelativeTo(null);
+                cartofBFrame.setVisible(true);
             });
         });
 
