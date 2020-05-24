@@ -7,3 +7,6 @@
 
 # USE CASE DIAGRAM :
 ![Exercise 4 image](docs/usecasediagram.jpg)
+
+# UML CLASS DIAGRAM:
+![Exercise 4 image_2](docs/UML_Class_Diagram.jpg)
