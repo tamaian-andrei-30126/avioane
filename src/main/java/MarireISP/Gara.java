@@ -10,7 +10,7 @@ public class Gara {
 
     public Gara(List<Tren> trenuri, List<Macaz> macazuri) {
         this.trenuri = trenuri;
-        this.macazuri=macazuri;
+        this.macazuri = macazuri;
     }
 
 }
