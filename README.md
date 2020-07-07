@@ -1,12 +1,11 @@
-# NU TE MAI PLANGE
+# Ex2 :
+![Exercise 2 image](docs/MarireISPEx2.jpeg)
 
-# da ti-ar sta binee gheeghegheghe
-#te omor la modul figurat, prin rime
-# Gaseste o descriere mai originala Tamaian
+# Ex3 :
+![Exercise 2 image](docs/MarireISPEx3StatechartDiagram1.jpg)
 
-
-# USE CASE DIAGRAM :
-![Exercise 4 image](docs/usecasediagram.jpg)
-
-# UML CLASS DIAGRAM:
-![Exercise 4 image_2](docs/UML_Class_Diagram.jpg)
+# Ex4 :
+Rolul diagramelor de secventa este de a arata utilizarea obiecetelor create in timp real si interactiunea prin metode intre ele.
+Aceste obiecte pot avea legaturi sincronizate sau nesincronizate, care au o ordine bine definita in timp.
+Legaturile pot fi dupa cum am zis asincrone, sincrone, feedback-uri (replay-uri), pot trimite mesaje (create message), pot sterge mesaje (delete message).
+![Exercise 2 image](docs/MarireISPEx4SequenceDiagram1.jpg)
